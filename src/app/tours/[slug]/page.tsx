@@ -1,9 +1,13 @@
-// export const generateStaticParams = async () => {
-//   return [{ slug: "abc" }, { slug: "123" }];
-// };
-
 import { getStoryblokApi, storyblokEditable } from "@storyblok/react/rsc";
 import { StoryblokStory } from "@storyblok/react/rsc";
+
+export const generateStaticParams = async () => {
+  const client = getStoryblokApi();
+  const response = await client.getStories({
+    content_type: "tour",
+  });
+  return response.data.stories.map((story) => ({ slug: story.slug }));
+};
 
 const fetchTourPage = async (slug: string) => {
   const client = getStoryblokApi();

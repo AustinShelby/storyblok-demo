@@ -22,9 +22,13 @@ const ToursPage = async () => {
   return (
     <div>
       <StoryblokStory story={story} />
-      {tours.map((tour) => (
-        <TourCard tour={tour} key={tour.content._uid} />
-      ))}
+      <div className="bg-blue-50">
+        <div className="layout grid md:grid-cols-2 component gap-8 py-16">
+          {tours.map((tour) => (
+            <TourCard tour={tour} key={tour.content._uid} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

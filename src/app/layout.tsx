@@ -1,10 +1,16 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
 import { StoryblokProvider } from "@/components/StoryblokProvider";
+import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const plus_jakarta_sans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-jakarta",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,6 +20,13 @@ export const metadata: Metadata = {
 storyblokInit({
   accessToken: process.env.STORYBLOK_TOKEN,
   use: [apiPlugin],
+  apiOptions: {
+    fetch: (input: RequestInfo | URL, init?: RequestInit | undefined) =>
+      fetch(input, {
+        ...init,
+        cache: process.env.NODE_ENV === "development" ? "no-cache" : undefined,
+      }),
+  },
 });
 
 export default function RootLayout({
@@ -23,9 +36,17 @@ export default function RootLayout({
 }) {
   return (
     <StoryblokProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <p className="text-red-500">Layout</p>
+      <html
+        lang="en"
+        className={`${inter.variable} ${plus_jakarta_sans.variable}`}
+      >
+        <body className="font-sans">
+          <header className="bg-blue-50">
+            <nav className="layout py-8 flex justify-between items-baseline">
+              <Link href={"/"}>Home</Link>
+              <Link href={"/tours"}>Browse Tours</Link>
+            </nav>
+          </header>
           {children}
         </body>
       </html>
